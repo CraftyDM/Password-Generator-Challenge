@@ -1,25 +1,40 @@
-const alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const numbers = "0123456789";
-const symbols = "!@#$%^&*_-+=";
+// Assignment code here
+const lowerCase = "abcdefghijklmnopqrstuvwxyz"
+const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const special = "!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~"
+const digit = "1234567890"
 
-function generatePassword() {
-  let output = "";
-  
-  const passwordTxt = document.getElementById("password");
-  const length = document.getElementById("length");
-  const incNumbers = document.getElementById("numbers");
-  const incSymbols = document.getElementById("symbols");
+const generatePassword = () => {
+  let length = 0
+  let charset = "";
+  do {
+    length = Number(prompt("character count?", "8"))
+  } while (length < 8 && length > 128)
 
-  const generatePassword = (length, characters) => {
-    let password = "";
-       for (let i = 0; i < length; i++) {
-      password += characters.charAt(
-        Math.floor(Math.random() * characters.length)
-      );
+  do {
+    if (window.confirm("Lowercase characters?")) {
+      charset += lowerCase
     }
-  return password;
-};
+    if (window.confirm("Uppercase characters?")) {
+      charset += upperCase
+    }
 
+    if (window.confirm("Special characters?")) {
+      charset += special
+    }
+
+    if (window.confirm("Number characters?")) {
+      charset += digit
+    }
+
+  } while (charset.length < 1)
+  password = "";
+
+  for (let i = 0; i < length; i++) {
+    password += charset.charAt(Math.floor(Math.random() * charset.length));
+  }
+  return password
+}
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
@@ -33,14 +48,6 @@ function writePassword() {
 
 }
 
-
 // Add event listener to generate button
-//generateBtn.addEventListener("click", writePassword);
-generateBtn.addEventListener("click", () => {
-  let characters = alpha;
-  incNumbers.checked ? (characters += numbers) : "";
-  incSymbols.checked ? (characters += symbols) : "";
-  passwordTxt.value = generatePassword(length.value, characters);
-});
-writePassword()
-}
+generateBtn.addEventListener("click", writePassword);
+
